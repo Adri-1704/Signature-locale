@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+Show less
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signature Locale — Le tote bag qui met en lumière vos commerces</title>
+    <meta name="description" content="Signature Locale propose un tote bag personnalisé réunissant 12 commerces locaux par ville. 1 000 sacs par commerce, 12 000 ambassadeurs pour votre ville.">
+    <style>
+        /* ===== Reset & Base ===== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --green: #2D6A4F;
+            --green-light: #40916C;
+            --green-pale: #D8F3DC;
+            --cream: #FEFAE0;
+            --dark: #1B1B1B;
+            --gray: #6B7280;
+            --white: #FFFFFF;
+            --radius: 12px;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: var(--dark);
+            line-height: 1.6;
+            background: var(--white);
+        }
+        img { max-width: 100%; display: block; }
+        a { text-decoration: none; color: inherit; }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        /* ===== Navigation ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            padding: 16px 0;
+        }
+        nav .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--green);
+            letter-spacing: -0.5px;
+        }
+        .logo span { color: var(--dark); }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 32px;
+        }
+        nav ul a {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--gray);
+            transition: color 0.2s;
+        }
+        nav ul a:hover { color: var(--green); }
+        .nav-cta {
+            background: var(--green);
+            color: var(--white) !important;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .nav-cta:hover { background: var(--green-light); }
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark);
+        }
+        /* ===== Hero ===== */
+        .hero {
+            padding: 160px 0 100px;
+            background: linear-gradient(135deg, var(--cream) 0%, var(--green-pale) 100%);
+            text-align: center;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: var(--white);
+            color: var(--green);
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 8px 20px;
+            border-radius: 50px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 12px rgba(45,106,79,0.1);
+        }
+        .hero h1 {
+            font-size: clamp(2.2rem, 5vw, 3.8rem);
+            font-weight: 800;
+            line-height: 1.15;
+            color: var(--dark);
+            max-width: 800px;
+            margin: 0 auto 24px;
+        }
+        .hero h1 em {
+            font-style: normal;
+            color: var(--green);
+        }
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 36px;
+            border-radius: 50px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.25s;
+        }
+        .btn-primary {
+            background: var(--green);
+            color: var(--white);
+            box-shadow: 0 4px 20px rgba(45,106,79,0.3);
+        }
+        .btn-primary:hover {
+            background: var(--green-light);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(45,106,79,0.35);
+        }
+        .btn-outline {
+            background: var(--white);
+            color: var(--green);
+            border: 2px solid var(--green);
+        }
+        .btn-outline:hover {
+            background: var(--green);
+            color: var(--white);
+        }
+        /* ===== Tote Bag Visual ===== */
+        .hero-visual {
+            margin-top: 60px;
+            display: flex;
+            justify-content: center;
+        }
+        .tote-mockup {
+            width: 320px;
+            height: 380px;
+            background: var(--white);
+            border-radius: 8px 8px 24px 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 24px 20px;
+        }
+        .tote-handle {
+            position: absolute;
+            top: -30px;
+            width: 120px;
+            height: 50px;
+            border: 4px solid var(--green);
+            border-bottom: none;
+            border-radius: 60px 60px 0 0;
+        }
+        .tote-title {
+            font-weight: 700;
+            color: var(--green);
+            font-size: 0.9rem;
+            margin-top: 16px;
+            margin-bottom: 4px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .tote-city {
+            font-size: 0.75rem;
+            color: var(--gray);
+            margin-bottom: 16px;
+        }
+        .tote-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 8px;
+            width: 100%;
+            flex: 1;
+        }
+        .tote-logo {
+            background: var(--green-pale);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: var(--green);
+            aspect-ratio: 1;
+        }
+        /* ===== Stats ===== */
+        .stats {
+            padding: 80px 0;
+            background: var(--white);
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--green);
+            line-height: 1;
+        }
+        .stat-label {
+            font-size: 1rem;
+            color: var(--gray);
+            margin-top: 8px;
+        }
+        /* ===== Concept ===== */
+        .concept {
+            padding: 100px 0;
+            background: var(--cream);
+        }
+        .section-tag {
+            display: inline-block;
+            color: var(--green);
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+        }
+        .section-title {
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--gray);
+            max-width: 650px;
+            margin-bottom: 60px;
+        }
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+        .concept-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 36px 28px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.05);
+            transition: transform 0.25s;
+        }
+        .concept-card:hover {
+            transform: translateY(-4px);
+        }
+        .concept-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--green-pale);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        .concept-card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .concept-card p {
+            font-size: 0.95rem;
+            color: var(--gray);
+            line-height: 1.6;
+        }
+        /* ===== Steps ===== */
+        .steps {
+            padding: 100px 0;
+            background: var(--white);
+        }
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 32px;
+            margin-top: 60px;
+        }
+        .step {
+            text-align: center;
+            position: relative;
+        }
+        .step::after {
+            content: '';
+            position: absolute;
+            top: 28px;
+            right: -16px;
+            width: 32px;
+            height: 2px;
+            background: var(--green-pale);
+        }
+        .step:last-child::after { display: none; }
+        .step-number {
+            width: 56px;
+            height: 56px;
+            background: var(--green);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin: 0 auto 20px;
+        }
+        .step h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .step p {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        /* ===== Benefits ===== */
+        .benefits {
+            padding: 100px 0;
+            background: var(--green);
+            color: var(--white);
+        }
+        .benefits .section-tag { color: var(--green-pale); }
+        .benefits .section-subtitle { color: rgba(255,255,255,0.7); }
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+        .benefit-item {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            background: rgba(255,255,255,0.08);
+            border-radius: var(--radius);
+            padding: 24px;
+            transition: background 0.2s;
+        }
+        .benefit-item:hover {
+            background: rgba(255,255,255,0.14);
+        }
+        .benefit-check {
+            width: 32px;
+            height: 32px;
+            min-width: 32px;
+            background: var(--green-pale);
+            color: var(--green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        .benefit-text h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .benefit-text p {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.7);
+        }
+        /* ===== CTA ===== */
+        .cta {
+            padding: 100px 0;
+            text-align: center;
+            background: linear-gradient(135deg, var(--green-pale) 0%, var(--cream) 100%);
+        }
+        .cta .section-title {
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .cta p {
+            font-size: 1.1rem;
+            color: var(--gray);
+            max-width: 500px;
+            margin: 0 auto 40px;
+        }
+        /* ===== Footer ===== */
+        footer {
+            padding: 48px 0;
+            background: var(--dark);
+            color: rgba(255,255,255,0.5);
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        footer .logo {
+            color: var(--green-pale);
+            margin-bottom: 12px;
+        }
+        footer .logo span { color: var(--white); }
+        /* ===== Responsive ===== */
+        @media (max-width: 768px) {
+            nav ul { display: none; }
+            .menu-toggle { display: block; }
+            nav ul.open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--white);
+                padding: 24px;
+                gap: 16px;
+                border-bottom: 1px solid rgba(0,0,0,0.06);
+            }
+            .stats-grid { grid-template-columns: 1fr; gap: 32px; }
+            .concept-grid { grid-template-columns: 1fr; }
+            .steps-grid { grid-template-columns: 1fr 1fr; }
+            .step::after { display: none; }
+            .benefits-grid { grid-template-columns: 1fr; }
+            .tote-mockup { width: 260px; height: 310px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <div class="logo"><span>Signature</span> Locale</div>
+            <ul id="navMenu">
+                <li><a href="#concept">Concept</a></li>
+                <li><a href="#fonctionnement">Fonctionnement</a></li>
+                <li><a href="#avantages">Avantages</a></li>
+                <li><a href="#contact" class="nav-cta">Rejoindre</a></li>
+            </ul>
+            <button class="menu-toggle" onclick="document.getElementById('navMenu').classList.toggle('open')">&#9776;</button>
+        </div>
+    </nav>
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-badge">Un concept unique pour les commerces locaux</div>
+            <h1>Votre commerce sur <em>12 000 tote bags</em> dans votre ville</h1>
+            <p>Signature Locale crée un tote bag unique par ville, mettant en avant 12 commerces locaux. Chaque partenaire reçoit 1 000 sacs pour sa clientèle.</p>
+            <div class="hero-buttons">
+                <a href="#contact" class="btn btn-primary">Inscrire mon commerce</a>
+                <a href="#concept" class="btn btn-outline">Découvrir le concept</a>
+            </div>
+            <div class="hero-visual">
+                <div class="tote-mockup">
+                    <div class="tote-handle"></div>
+                    <div class="tote-title">Signature Locale</div>
+                    <div class="tote-city">Votre Ville</div>
+                    <div class="tote-grid">
+                        <div class="tote-logo">Café</div>
+                        <div class="tote-logo">Fleurs</div>
+                        <div class="tote-logo">Bio</div>
+                        <div class="tote-logo">Pain</div>
+                        <div class="tote-logo">Vins</div>
+                        <div class="tote-logo">Mode</div>
+                        <div class="tote-logo">Vélo</div>
+                        <div class="tote-logo">Bijoux</div>
+                        <div class="tote-logo">Livres</div>
+                        <div class="tote-logo">Yoga</div>
+                        <div class="tote-logo">Resto</div>
+                        <div class="tote-logo">Photo</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Stats -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div>
+                    <div class="stat-number">12</div>
+                    <div class="stat-label">Commerces par ville</div>
+                </div>
+                <div>
+                    <div class="stat-number">1 000</div>
+                    <div class="stat-label">Tote bags par commerce</div>
+                </div>
+                <div>
+                    <div class="stat-number">12 000</div>
+                    <div class="stat-label">Sacs en circulation par ville</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Concept -->
+    <section class="concept" id="concept">
+        <div class="container">
+            <div class="section-tag">Le concept</div>
+            <h2 class="section-title">Un sac, douze histoires locales</h2>
+            <p class="section-subtitle">Signature Locale rassemble 12 commerces engagés sur un tote bag au design soigné, distribué à grande échelle dans votre ville.</p>
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <div class="concept-icon">&#127919;</div>
+                    <h3>Visibilité partagée</h3>
+                    <p>Votre logo rejoint 11 autres commerces sur un objet du quotidien. Chaque sac devient un panneau publicitaire ambulant.</p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-icon">&#127758;</div>
+                    <h3>Ancrage local</h3>
+                    <p>Le tote bag est conçu ville par ville, créant un sentiment d'appartenance fort auprès des habitants.</p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-icon">&#9851;&#65039;</div>
+                    <h3>Démarche responsable</h3>
+                    <p>Un sac réutilisable en coton, alternative durable aux sacs plastiques, porteur de valeurs éco-responsables.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Steps -->
+    <section class="steps" id="fonctionnement">
+        <div class="container">
+            <div class="section-tag">Comment ça marche</div>
+            <h2 class="section-title">Quatre étapes simples</h2>
+            <p class="section-subtitle">De l'inscription à la distribution, tout est pris en charge.</p>
+            <div class="steps-grid">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Inscription</h3>
+                    <p>Vous inscrivez votre commerce pour rejoindre l'édition de votre ville.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Design</h3>
+                    <p>Nous intégrons votre logo dans un design unique aux côtés de 11 autres commerces.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Production</h3>
+                    <p>12 000 tote bags en coton sont produits avec les 12 logos de l'édition.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Distribution</h3>
+                    <p>Chaque commerce reçoit 1 000 sacs à offrir à ses clients.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Benefits -->
+    <section class="benefits" id="avantages">
+        <div class="container">
+            <div class="section-tag">Avantages</div>
+            <h2 class="section-title">Pourquoi rejoindre Signature Locale ?</h2>
+            <p class="section-subtitle">Un investissement malin pour une visibilité maximale auprès de votre communauté.</p>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="benefit-check">&#10003;</div>
+                    <div class="benefit-text">
+                        <h4>Publicité durable</h4>
+                        <p>Un tote bag s'utilise des centaines de fois. Votre logo est vu chaque jour dans la rue, au marché, en ville.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-check">&#10003;</div>
+                    <div class="benefit-text">
+                        <h4>Coût mutualisé</h4>
+                        <p>En partageant les coûts entre 12 commerces, la communication devient accessible à tous les budgets.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-check">&#10003;</div>
+                    <div class="benefit-text">
+                        <h4>Réseau de commerçants</h4>
+                        <p>Intégrez une communauté de commerçants engagés qui se recommandent mutuellement.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-check">&#10003;</div>
+                    <div class="benefit-text">
+                        <h4>Image éco-responsable</h4>
+                        <p>Associez votre marque à une démarche écologique en proposant un sac réutilisable à vos clients.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-check">&#10003;</div>
+                    <div class="benefit-text">
+                        <h4>Cadeau client</h4>
+                        <p>Offrez un objet utile et esthétique à vos clients. Un geste qui fidélise et renforce votre relation.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-check">&#10003;</div>
+                    <div class="benefit-text">
+                        <h4>Effet de découverte</h4>
+                        <p>Les clients des 11 autres commerces découvrent le vôtre grâce au sac. Un bouche-à-oreille visuel puissant.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- CTA -->
+    <section class="cta" id="contact">
+        <div class="container">
+            <div class="section-tag">Passez à l'action</div>
+            <h2 class="section-title">Votre commerce sur le prochain tote bag de votre ville</h2>
+            <p>Les places sont limitées à 12 par ville. Inscrivez-vous dès maintenant pour réserver la vôtre.</p>
+            <a href="mailto:contact@signaturelocale.fr" class="btn btn-primary">Nous contacter</a>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="logo"><span>Signature</span> Locale</div>
+            <p>&copy; 2026 Signature Locale. Tous droits réservés.</p>
+        </div>
+    </footer>
+</body>
+</html>
