@@ -164,102 +164,213 @@ Show less
             margin-top: 60px;
             display: flex;
             justify-content: center;
+            perspective: 800px;
+        }
+        .tote-scene {
+            position: relative;
+            width: 400px;
+            height: 520px;
+        }
+        /* Wall shadow behind the bag */
+        .tote-shadow {
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 40px;
+            background: radial-gradient(ellipse, rgba(0,0,0,0.18) 0%, transparent 70%);
+            border-radius: 50%;
         }
         .tote-wrapper {
+            position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
-            filter: drop-shadow(0 20px 40px rgba(0,0,0,0.15));
         }
+        /* Handles — realistic curved straps */
         .tote-handles {
-            display: flex;
-            justify-content: center;
-            gap: 80px;
-            margin-bottom: -10px;
             position: relative;
-            z-index: 1;
+            width: 200px;
+            height: 80px;
+            margin-bottom: -6px;
+            z-index: 2;
         }
-        .tote-handle {
-            width: 80px;
-            height: 100px;
-            border: 6px solid #c2a67d;
+        .tote-handle-left,
+        .tote-handle-right {
+            position: absolute;
+            bottom: 0;
+            width: 70px;
+            height: 75px;
+            border: 5px solid #c4a97d;
             border-bottom: none;
-            border-radius: 40px 40px 0 0;
+            border-radius: 35px 35px 0 0;
+            background: transparent;
         }
+        .tote-handle-left::after,
+        .tote-handle-right::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 5px solid rgba(160,130,80,0.3);
+            border-bottom: none;
+            border-radius: 35px 35px 0 0;
+            filter: blur(1px);
+        }
+        .tote-handle-left {
+            left: 20px;
+            transform: rotate(-3deg);
+        }
+        .tote-handle-right {
+            right: 20px;
+            transform: rotate(3deg);
+        }
+        /* Bag body — fabric look */
         .tote-body {
             width: 320px;
-            min-height: 380px;
-            background: linear-gradient(165deg, #f5f0e6 0%, #ebe4d4 40%, #e8dfcc 100%);
-            border-radius: 4px 4px 12px 12px;
+            min-height: 400px;
             position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 30px 24px 24px;
-            border: 1px solid rgba(0,0,0,0.06);
+            padding: 32px 28px 28px;
+            /* Fabric base color */
+            background:
+                /* Subtle fabric weave texture */
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0,0,0,0.015) 2px,
+                    rgba(0,0,0,0.015) 4px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0,0,0,0.01) 2px,
+                    rgba(0,0,0,0.01) 4px
+                ),
+                /* Main fabric gradient */
+                linear-gradient(175deg, #f0e8d8 0%, #e8dece 30%, #e4d8c4 60%, #ddd2be 100%);
+            border-radius: 3px 3px 6px 6px;
+            box-shadow:
+                /* Inner fabric depth */
+                inset 0 2px 4px rgba(0,0,0,0.04),
+                inset 0 -2px 6px rgba(0,0,0,0.03),
+                inset 4px 0 8px rgba(0,0,0,0.02),
+                inset -4px 0 8px rgba(0,0,0,0.02),
+                /* Outer shadow */
+                0 8px 32px rgba(0,0,0,0.12),
+                0 2px 8px rgba(0,0,0,0.08);
         }
+        /* Fabric fold/crease lines */
         .tote-body::before {
             content: '';
             position: absolute;
             top: 0;
-            left: 20px;
-            right: 20px;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, rgba(0,0,0,0.04), transparent);
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                /* Vertical center crease */
+                linear-gradient(90deg,
+                    transparent 48%,
+                    rgba(0,0,0,0.02) 49.5%,
+                    rgba(255,255,255,0.03) 50.5%,
+                    transparent 52%
+                ),
+                /* Subtle side folds */
+                linear-gradient(90deg,
+                    rgba(0,0,0,0.03) 0%,
+                    transparent 4%,
+                    transparent 96%,
+                    rgba(0,0,0,0.03) 100%
+                ),
+                /* Top edge stitch line */
+                linear-gradient(180deg,
+                    rgba(0,0,0,0.06) 0px,
+                    rgba(0,0,0,0.02) 3px,
+                    transparent 6px
+                );
+            border-radius: inherit;
+            pointer-events: none;
+        }
+        /* Stitching at top */
+        .tote-body::after {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 15px;
+            right: 15px;
+            height: 1px;
+            background: repeating-linear-gradient(
+                90deg,
+                rgba(180,160,120,0.4) 0px,
+                rgba(180,160,120,0.4) 6px,
+                transparent 6px,
+                transparent 10px
+            );
         }
         .tote-city {
-            font-family: 'Georgia', serif;
-            font-size: 1.6rem;
+            font-family: 'Georgia', 'Times New Roman', serif;
+            font-size: 1.7rem;
             font-weight: 700;
-            color: var(--green);
-            letter-spacing: 3px;
+            color: #2D5A3F;
+            letter-spacing: 4px;
             text-transform: uppercase;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
+            text-shadow: 0 1px 0 rgba(255,255,255,0.3);
         }
         .tote-year {
-            font-family: 'Georgia', serif;
-            font-size: 1rem;
-            color: var(--green);
-            letter-spacing: 6px;
-            margin-bottom: 24px;
-            opacity: 0.7;
+            font-family: 'Georgia', 'Times New Roman', serif;
+            font-size: 0.95rem;
+            color: #2D5A3F;
+            letter-spacing: 8px;
+            margin-bottom: 20px;
+            opacity: 0.6;
         }
         .tote-divider {
-            width: 60px;
-            height: 2px;
-            background: var(--green);
-            margin-bottom: 24px;
-            opacity: 0.3;
+            width: 50px;
+            height: 1.5px;
+            background: #2D5A3F;
+            margin-bottom: 22px;
+            opacity: 0.25;
         }
         .tote-logos {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
+            gap: 8px;
             width: 100%;
-            padding: 0 8px;
-            margin-bottom: 20px;
+            padding: 0 4px;
+            margin-bottom: 18px;
         }
         .tote-logo-slot {
             aspect-ratio: 1;
-            background: rgba(45,106,79,0.06);
-            border-radius: 8px;
+            background: rgba(45,90,63,0.05);
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.55rem;
-            color: var(--green);
+            font-size: 0.5rem;
+            color: #2D5A3F;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border: 1px dashed rgba(45,106,79,0.15);
+            letter-spacing: 0.3px;
+            text-align: center;
+            line-height: 1.3;
+            border: 1px solid rgba(45,90,63,0.08);
         }
         .tote-tagline {
-            font-size: 0.7rem;
-            color: var(--gray);
-            letter-spacing: 1.5px;
+            font-size: 0.65rem;
+            color: #8B7D6B;
+            letter-spacing: 2px;
             text-transform: uppercase;
             margin-top: auto;
-            opacity: 0.6;
+            opacity: 0.7;
         }
         /* ===== Stats ===== */
         .stats {
@@ -490,11 +601,15 @@ Show less
             .steps-grid { grid-template-columns: 1fr 1fr; }
             .step::after { display: none; }
             .benefits-grid { grid-template-columns: 1fr; }
-            .tote-body { width: 260px; min-height: 320px; }
-            .tote-handles { gap: 60px; }
-            .tote-handle { width: 65px; height: 80px; }
+            .tote-scene { width: 320px; height: 440px; }
+            .tote-body { width: 260px; min-height: 340px; padding: 24px 18px 20px; }
+            .tote-handles { width: 160px; height: 65px; }
+            .tote-handle-left, .tote-handle-right { width: 55px; height: 60px; }
+            .tote-handle-left { left: 15px; }
+            .tote-handle-right { right: 15px; }
             .tote-city { font-size: 1.3rem; }
-            .tote-logos { gap: 6px; }
+            .tote-logos { gap: 5px; }
+            .tote-logo-slot { font-size: 0.45rem; }
         }
     </style>
 </head>
@@ -523,10 +638,11 @@ Show less
                 <a href="#concept" class="btn btn-outline">Découvrir le concept</a>
             </div>
             <div class="hero-visual">
+                <div class="tote-scene">
                 <div class="tote-wrapper">
                     <div class="tote-handles">
-                        <div class="tote-handle"></div>
-                        <div class="tote-handle"></div>
+                        <div class="tote-handle-left"></div>
+                        <div class="tote-handle-right"></div>
                     </div>
                     <div class="tote-body">
                         <div class="tote-city">Genève</div>
@@ -548,6 +664,8 @@ Show less
                         </div>
                         <div class="tote-tagline">Signature Locale</div>
                     </div>
+                </div>
+                <div class="tote-shadow"></div>
                 </div>
             </div>
         </div>
@@ -695,4 +813,5 @@ Show less
         </div>
     </footer>
 </body>
-    </html>
+</html>
+
