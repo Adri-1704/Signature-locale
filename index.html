@@ -1377,10 +1377,37 @@
             });
         });
         // Form success (when redirected back)
-        if (window.location.hash === '#contact' && document.referrer.includes('formsubmit.co')) {
-            document.getElementById('contactForm').style.display = 'none';
-            document.getElementById('formSuccess').classList.add('show');
-        }
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var form = this;
+            var btn = form.querySelector('button[type="submit"]');
+            btn.disabled = true;
+            btn.textContent = 'Envoi en cours...';
+            fetch('https://formsubmit.co/ajax/lateliersuisse.ch@gmail.com', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify({
+                    name: form.name.value,
+                    business: form.business.value,
+                    email: form.email.value,
+                    phone: form.phone.value,
+                    city: form.city.value,
+                    type: form.type.value,
+                    message: form.message.value,
+                    _subject: 'Nouveau contact — Signature Locale'
+                })
+            })
+            .then(function(res) { return res.json(); })
+            .then(function(data) {
+                form.style.display = 'none';
+                document.getElementById('formSuccess').classList.add('show');
+            })
+            .catch(function() {
+                btn.disabled = false;
+                btn.innerHTML = 'Envoyer ma demande &#8594;';
+                alert('Erreur lors de l\'envoi. Veuillez réessayer.');
+            });
+        });
     </script>
 </body>
 </html>
