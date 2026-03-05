@@ -1,12 +1,25 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-Show less
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Signature Locale — Le tote bag qui met en lumière vos commerces</title>
     <meta name="description" content="Signature Locale propose un tote bag personnalisé réunissant 12 commerces locaux par ville. 1 000 sacs par commerce, 12 000 ambassadeurs pour votre ville.">
     <meta name="referrer" content="no-referrer">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Signature Locale — 12 commerces, 1 tote bag, 1 ville">
+    <meta property="og:description" content="Un tote bag unique par ville mettant en avant 12 commerces locaux. 12 000 sacs en circulation pour une visibilité maximale.">
+    <meta property="og:image" content="https://adri-1704.github.io/Signature-locale/tote-bag.webp">
+    <meta property="og:url" content="https://adri-1704.github.io/Signature-locale/">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="fr_CH">
+    <meta name="twitter:card" content="summary_large_image">
+    <!-- Favicon SVG -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>S</text></svg>">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         /* ===== Reset & Base ===== */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -19,13 +32,15 @@ Show less
             --gray: #6B7280;
             --white: #FFFFFF;
             --radius: 12px;
+            --gold: #C8A951;
         }
         html { scroll-behavior: smooth; }
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
             color: var(--dark);
             line-height: 1.6;
             background: var(--white);
+            overflow-x: hidden;
         }
         img { max-width: 100%; display: block; }
         a { text-decoration: none; color: inherit; }
@@ -34,6 +49,43 @@ Show less
             margin: 0 auto;
             padding: 0 24px;
         }
+        /* ===== Animations ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Stagger children */
+        .reveal-children > * {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .reveal-children.visible > *:nth-child(1) { transition-delay: 0s; }
+        .reveal-children.visible > *:nth-child(2) { transition-delay: 0.1s; }
+        .reveal-children.visible > *:nth-child(3) { transition-delay: 0.2s; }
+        .reveal-children.visible > *:nth-child(4) { transition-delay: 0.3s; }
+        .reveal-children.visible > *:nth-child(5) { transition-delay: 0.35s; }
+        .reveal-children.visible > *:nth-child(6) { transition-delay: 0.4s; }
+        .reveal-children.visible > * {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* ===== Top Banner ===== */
+        .top-banner {
+            background: var(--green);
+            color: var(--white);
+            text-align: center;
+            padding: 10px 24px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+        .top-banner strong { color: var(--gold); }
         /* ===== Navigation ===== */
         nav {
             position: fixed;
@@ -41,10 +93,14 @@ Show less
             left: 0;
             right: 0;
             z-index: 100;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.97);
+            backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(0,0,0,0.06);
-            padding: 16px 0;
+            padding: 14px 0;
+            transition: box-shadow 0.3s;
+        }
+        nav.scrolled {
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
         }
         nav .container {
             display: flex;
@@ -53,7 +109,7 @@ Show less
         }
         .logo {
             font-size: 1.4rem;
-            font-weight: 700;
+            font-weight: 800;
             color: var(--green);
             letter-spacing: -0.5px;
         }
@@ -62,9 +118,10 @@ Show less
             list-style: none;
             display: flex;
             gap: 32px;
+            align-items: center;
         }
         nav ul a {
-            font-size: 0.95rem;
+            font-size: 0.92rem;
             font-weight: 500;
             color: var(--gray);
             transition: color 0.2s;
@@ -76,9 +133,9 @@ Show less
             padding: 10px 24px;
             border-radius: 50px;
             font-weight: 600;
-            transition: background 0.2s;
+            transition: all 0.25s;
         }
-        .nav-cta:hover { background: var(--green-light); }
+        .nav-cta:hover { background: var(--green-light); transform: translateY(-1px); }
         .menu-toggle {
             display: none;
             background: none;
@@ -89,9 +146,21 @@ Show less
         }
         /* ===== Hero ===== */
         .hero {
-            padding: 160px 0 100px;
-            background: linear-gradient(135deg, var(--cream) 0%, var(--green-pale) 100%);
+            padding: 130px 0 80px;
+            background: linear-gradient(160deg, var(--cream) 0%, var(--green-pale) 50%, #f0faf4 100%);
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(45,106,79,0.06) 0%, transparent 70%);
+            border-radius: 50%;
         }
         .hero-badge {
             display: inline-block;
@@ -103,24 +172,43 @@ Show less
             border-radius: 50px;
             margin-bottom: 24px;
             box-shadow: 0 2px 12px rgba(45,106,79,0.1);
+            animation: fadeInDown 0.6s ease;
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .hero h1 {
             font-size: clamp(2.2rem, 5vw, 3.8rem);
-            font-weight: 800;
-            line-height: 1.15;
+            font-weight: 900;
+            line-height: 1.12;
             color: var(--dark);
             max-width: 800px;
             margin: 0 auto 24px;
+            letter-spacing: -1px;
         }
         .hero h1 em {
             font-style: normal;
             color: var(--green);
+            position: relative;
+        }
+        .hero h1 em::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: var(--green-pale);
+            z-index: -1;
+            border-radius: 3px;
         }
         .hero p {
-            font-size: 1.2rem;
+            font-size: 1.15rem;
             color: var(--gray);
             max-width: 600px;
             margin: 0 auto 40px;
+            line-height: 1.7;
         }
         .hero-buttons {
             display: flex;
@@ -159,215 +247,51 @@ Show less
             background: var(--green);
             color: var(--white);
         }
-        /* ===== Tote Bag CSS Mockup ===== */
         .hero-visual {
             margin-top: 60px;
             display: flex;
             justify-content: center;
             perspective: 800px;
         }
-        .tote-scene {
-            position: relative;
-            width: 400px;
-            height: 520px;
-        }
-        /* Wall shadow behind the bag */
-        .tote-shadow {
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 300px;
-            height: 40px;
-            background: radial-gradient(ellipse, rgba(0,0,0,0.18) 0%, transparent 70%);
-            border-radius: 50%;
-        }
-        .tote-wrapper {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        /* Handle — single large centered strap */
-        .tote-handles {
-            position: relative;
-            width: 200px;
-            height: 120px;
-            margin-bottom: -8px;
-            z-index: 2;
-            display: flex;
-            justify-content: center;
-        }
-        .tote-handle-left {
-            width: 160px;
-            height: 115px;
-            border: 6px solid #b89b6a;
-            border-bottom: none;
-            border-radius: 80px 80px 0 0;
-            background: transparent;
-            position: relative;
-            box-shadow:
-                inset 0 2px 3px rgba(0,0,0,0.08),
-                0 -2px 4px rgba(0,0,0,0.04);
-        }
-        .tote-handle-left::before {
-            content: '';
-            position: absolute;
-            top: 3px;
-            left: 3px;
-            right: 3px;
-            height: 108px;
-            border: 2px solid rgba(200,175,130,0.4);
-            border-bottom: none;
-            border-radius: 77px 77px 0 0;
-        }
-        .tote-handle-right {
-            display: none;
-        }
-        /* Bag body — fabric look */
-        .tote-body {
-            width: 320px;
-            min-height: 400px;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 32px 28px 28px;
-            /* Fabric base color */
-            background:
-                /* Subtle fabric weave texture */
-                repeating-linear-gradient(
-                    0deg,
-                    transparent,
-                    transparent 2px,
-                    rgba(0,0,0,0.015) 2px,
-                    rgba(0,0,0,0.015) 4px
-                ),
-                repeating-linear-gradient(
-                    90deg,
-                    transparent,
-                    transparent 2px,
-                    rgba(0,0,0,0.01) 2px,
-                    rgba(0,0,0,0.01) 4px
-                ),
-                /* Main fabric gradient */
-                linear-gradient(175deg, #f0e8d8 0%, #e8dece 30%, #e4d8c4 60%, #ddd2be 100%);
-            border-radius: 3px 3px 6px 6px;
-            box-shadow:
-                /* Inner fabric depth */
-                inset 0 2px 4px rgba(0,0,0,0.04),
-                inset 0 -2px 6px rgba(0,0,0,0.03),
-                inset 4px 0 8px rgba(0,0,0,0.02),
-                inset -4px 0 8px rgba(0,0,0,0.02),
-                /* Outer shadow */
-                0 8px 32px rgba(0,0,0,0.12),
-                0 2px 8px rgba(0,0,0,0.08);
-        }
-        /* Fabric fold/crease lines */
-        .tote-body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background:
-                /* Vertical center crease */
-                linear-gradient(90deg,
-                    transparent 48%,
-                    rgba(0,0,0,0.02) 49.5%,
-                    rgba(255,255,255,0.03) 50.5%,
-                    transparent 52%
-                ),
-                /* Subtle side folds */
-                linear-gradient(90deg,
-                    rgba(0,0,0,0.03) 0%,
-                    transparent 4%,
-                    transparent 96%,
-                    rgba(0,0,0,0.03) 100%
-                ),
-                /* Top edge stitch line */
-                linear-gradient(180deg,
-                    rgba(0,0,0,0.06) 0px,
-                    rgba(0,0,0,0.02) 3px,
-                    transparent 6px
-                );
-            border-radius: inherit;
-            pointer-events: none;
-        }
-        /* Stitching at top */
-        .tote-body::after {
-            content: '';
-            position: absolute;
-            top: 5px;
-            left: 15px;
-            right: 15px;
-            height: 1px;
-            background: repeating-linear-gradient(
-                90deg,
-                rgba(180,160,120,0.4) 0px,
-                rgba(180,160,120,0.4) 6px,
-                transparent 6px,
-                transparent 10px
-            );
-        }
-        .tote-city {
-            font-family: 'Georgia', 'Times New Roman', serif;
-            font-size: 1.7rem;
-Show less
-            font-weight: 700;
-            color: #2D5A3F;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            margin-bottom: 2px;
-            text-shadow: 0 1px 0 rgba(255,255,255,0.3);
-        }
-        .tote-year {
-            font-family: 'Georgia', 'Times New Roman', serif;
-            font-size: 0.95rem;
-            color: #2D5A3F;
-            letter-spacing: 8px;
-            margin-bottom: 20px;
-            opacity: 0.6;
-        }
-        .tote-divider {
-            width: 50px;
-            height: 1.5px;
-            background: #2D5A3F;
-            margin-bottom: 22px;
-            opacity: 0.25;
-        }
-        .tote-logos {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
+        .tote-image {
+            max-width: 420px;
             width: 100%;
-            padding: 0 4px;
-            margin-bottom: 18px;
+            height: auto;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+            transition: transform 0.4s ease;
         }
-        .tote-logo-slot {
-            aspect-ratio: 1;
-            background: rgba(45,90,63,0.05);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.5rem;
-            color: #2D5A3F;
+        .tote-image:hover {
+            transform: scale(1.02) rotate(-1deg);
+        }
+        /* ===== Trusted by / logos ===== */
+        .trust-bar {
+            padding: 40px 0;
+            background: var(--white);
+            border-bottom: 1px solid rgba(0,0,0,0.04);
+        }
+        .trust-bar p {
+            text-align: center;
+            font-size: 0.82rem;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.3px;
-            text-align: center;
-            line-height: 1.3;
-            border: 1px solid rgba(45,90,63,0.08);
-        }
-        .tote-tagline {
-            font-size: 0.65rem;
-            color: #8B7D6B;
             letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-top: auto;
-            opacity: 0.7;
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+        .trust-logos {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            align-items: center;
+            opacity: 0.5;
+        }
+        .trust-logos span {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--dark);
+            letter-spacing: -0.3px;
         }
         /* ===== Stats ===== */
         .stats {
@@ -381,10 +305,11 @@ Show less
             text-align: center;
         }
         .stat-number {
-            font-size: 3rem;
-            font-weight: 800;
+            font-size: 3.2rem;
+            font-weight: 900;
             color: var(--green);
             line-height: 1;
+            letter-spacing: -1px;
         }
         .stat-label {
             font-size: 1rem;
@@ -399,10 +324,10 @@ Show less
         .section-tag {
             display: inline-block;
             color: var(--green);
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 2.5px;
             margin-bottom: 12px;
         }
         .section-title {
@@ -410,12 +335,14 @@ Show less
             font-weight: 800;
             margin-bottom: 20px;
             line-height: 1.2;
+            letter-spacing: -0.5px;
         }
         .section-subtitle {
             font-size: 1.1rem;
             color: var(--gray);
             max-width: 650px;
             margin-bottom: 60px;
+            line-height: 1.7;
         }
         .concept-grid {
             display: grid;
@@ -427,10 +354,11 @@ Show less
             border-radius: var(--radius);
             padding: 36px 28px;
             box-shadow: 0 4px 24px rgba(0,0,0,0.05);
-            transition: transform 0.25s;
+            transition: transform 0.25s, box-shadow 0.25s;
         }
         .concept-card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-6px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.1);
         }
         .concept-icon {
             width: 56px;
@@ -451,12 +379,54 @@ Show less
         .concept-card p {
             font-size: 0.95rem;
             color: var(--gray);
-            line-height: 1.6;
+            line-height: 1.7;
+        }
+        /* ===== About ===== */
+        .about {
+            padding: 100px 0;
+            background: var(--white);
+        }
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        .about-text h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--dark);
+        }
+        .about-text p {
+            font-size: 1rem;
+            color: var(--gray);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+        .about-values {
+            display: flex;
+            gap: 24px;
+            margin-top: 24px;
+        }
+        .about-value {
+            text-align: center;
+        }
+        .about-value .value-number {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--green);
+        }
+        .about-value .value-label {
+            font-size: 0.8rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         /* ===== Steps ===== */
         .steps {
             padding: 100px 0;
-            background: var(--white);
+            background: #f8faf9;
         }
         .steps-grid {
             display: grid;
@@ -490,6 +460,7 @@ Show less
             font-size: 1.3rem;
             font-weight: 800;
             margin: 0 auto 20px;
+            box-shadow: 0 4px 12px rgba(45,106,79,0.2);
         }
         .step h3 {
             font-size: 1.05rem;
@@ -499,6 +470,7 @@ Show less
         .step p {
             font-size: 0.9rem;
             color: var(--gray);
+            line-height: 1.6;
         }
         /* ===== Benefits ===== */
         .benefits {
@@ -520,10 +492,11 @@ Show less
             background: rgba(255,255,255,0.08);
             border-radius: var(--radius);
             padding: 24px;
-            transition: background 0.2s;
+            transition: background 0.2s, transform 0.2s;
         }
         .benefit-item:hover {
             background: rgba(255,255,255,0.14);
+            transform: translateX(4px);
         }
         .benefit-check {
             width: 32px;
@@ -546,6 +519,191 @@ Show less
         .benefit-text p {
             font-size: 0.9rem;
             color: rgba(255,255,255,0.7);
+            line-height: 1.6;
+        }
+        /* ===== Pricing ===== */
+        .pricing {
+            padding: 100px 0;
+            background: var(--white);
+            text-align: center;
+        }
+        .pricing-card {
+            max-width: 480px;
+            margin: 0 auto;
+            background: linear-gradient(160deg, #f8fdf9, var(--green-pale));
+            border: 2px solid rgba(45,106,79,0.12);
+            border-radius: 20px;
+            padding: 48px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        .pricing-card::before {
+            content: 'Édition 2026';
+            position: absolute;
+            top: 20px;
+            right: -30px;
+            background: var(--green);
+            color: var(--white);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 6px 40px;
+            transform: rotate(45deg);
+            letter-spacing: 0.5px;
+        }
+        .pricing-card h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .pricing-price {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--green);
+            line-height: 1;
+            margin: 20px 0 8px;
+            letter-spacing: -2px;
+        }
+        .pricing-price span {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--gray);
+            letter-spacing: 0;
+        }
+        .pricing-subtitle {
+            font-size: 0.95rem;
+            color: var(--gray);
+            margin-bottom: 28px;
+        }
+        .pricing-features {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 32px;
+        }
+        .pricing-features li {
+            padding: 10px 0;
+            font-size: 0.95rem;
+            color: var(--dark);
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .pricing-features li::before {
+            content: '\2713';
+            color: var(--green);
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        /* ===== Testimonials ===== */
+        .testimonials {
+            padding: 100px 0;
+            background: var(--cream);
+        }
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+        .testimonial-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 32px 28px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.05);
+            position: relative;
+        }
+        .testimonial-card::before {
+            content: '\201C';
+            font-size: 4rem;
+            color: var(--green-pale);
+            position: absolute;
+            top: 12px;
+            left: 20px;
+            line-height: 1;
+            font-family: Georgia, serif;
+        }
+        .testimonial-text {
+            font-size: 0.95rem;
+            color: var(--gray);
+            line-height: 1.7;
+            margin-bottom: 20px;
+            padding-top: 16px;
+            font-style: italic;
+        }
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .testimonial-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--green);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        .testimonial-name {
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        .testimonial-role {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+        /* ===== FAQ ===== */
+        .faq {
+            padding: 100px 0;
+            background: var(--white);
+        }
+        .faq-list {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .faq-item {
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+        }
+        .faq-question {
+            width: 100%;
+            background: none;
+            border: none;
+            padding: 24px 0;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--dark);
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: inherit;
+        }
+        .faq-question::after {
+            content: '+';
+            font-size: 1.4rem;
+            color: var(--green);
+            font-weight: 300;
+            transition: transform 0.3s;
+        }
+        .faq-item.open .faq-question::after {
+            content: '-';
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        .faq-item.open .faq-answer {
+            max-height: 200px;
+            padding-bottom: 24px;
+        }
+        .faq-answer p {
+            font-size: 0.95rem;
+            color: var(--gray);
+            line-height: 1.7;
         }
         /* ===== CTA ===== */
         .cta {
@@ -558,16 +716,44 @@ Show less
             margin-left: auto;
             margin-right: auto;
         }
-        .cta p {
+        .cta > .container > p {
             font-size: 1.1rem;
             color: var(--gray);
             max-width: 500px;
-            margin: 0 auto 40px;
+            margin: 0 auto 16px;
+        }
+        .cta-urgency {
+            display: inline-block;
+            background: #FEF3C7;
+            color: #92400E;
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 8px 20px;
+            border-radius: 50px;
+            margin-bottom: 32px;
+        }
+        .cta-contact-options {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        .cta-contact-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: var(--gray);
+            font-weight: 500;
+        }
+        .cta-contact-option strong {
+            color: var(--dark);
         }
         /* ===== Form ===== */
         .cta-form {
             max-width: 520px;
-            margin: 40px auto 0;
+            margin: 0 auto;
             text-align: left;
         }
         .form-row {
@@ -596,13 +782,14 @@ Show less
             font-family: inherit;
             background: var(--white);
             color: var(--dark);
-            transition: border-color 0.2s;
+            transition: border-color 0.2s, box-shadow 0.2s;
             outline: none;
         }
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
             border-color: var(--green);
+            box-shadow: 0 0 0 3px rgba(45,106,79,0.1);
         }
         .form-group textarea {
             resize: vertical;
@@ -615,33 +802,114 @@ Show less
         .form-submit .btn-primary {
             width: 100%;
             justify-content: center;
-            }
+        }
         .form-note {
-Show less
             font-size: 0.8rem;
             color: var(--gray);
             text-align: center;
             margin-top: 12px;
         }
+        /* ===== Form success ===== */
+        .form-success {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .form-success.show {
+            display: block;
+        }
+        .form-success-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--green);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin: 0 auto 16px;
+        }
+        .form-success h3 {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+        }
+        .form-success p {
+            color: var(--gray);
+        }
         /* ===== Footer ===== */
         footer {
-            padding: 48px 0;
+            padding: 60px 0 40px;
             background: var(--dark);
             color: rgba(255,255,255,0.5);
-            text-align: center;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 48px;
+            margin-bottom: 40px;
+        }
+        .footer-about p {
             font-size: 0.9rem;
+            line-height: 1.7;
+            margin-top: 12px;
         }
-        footer .logo {
+        .footer-links h4,
+        .footer-contact h4 {
+            color: var(--white);
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .footer-links ul {
+            list-style: none;
+        }
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        .footer-links a {
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+        .footer-links a:hover {
             color: var(--green-pale);
-            margin-bottom: 12px;
         }
-        footer .logo span { color: var(--white); }
+        .footer-contact p {
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+        .footer-contact a {
+            color: var(--green-pale);
+            transition: opacity 0.2s;
+        }
+        .footer-contact a:hover {
+            opacity: 0.8;
+        }
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+        }
+        .footer-bottom a {
+            color: rgba(255,255,255,0.5);
+            transition: color 0.2s;
+        }
+        .footer-bottom a:hover {
+            color: var(--green-pale);
+        }
+        .footer-legal {
+            display: flex;
+            gap: 24px;
+        }
         /* ===== Responsive ===== */
         @media (max-width: 768px) {
-            nav ul { display: none; }
-            .menu-toggle { display: block; }
-            nav ul.open {
-                display: flex;
+            nav ul {
+                display: none;
                 flex-direction: column;
                 position: absolute;
                 top: 100%;
@@ -651,24 +919,32 @@ Show less
                 padding: 24px;
                 gap: 16px;
                 border-bottom: 1px solid rgba(0,0,0,0.06);
+                box-shadow: 0 8px 24px rgba(0,0,0,0.08);
             }
+            nav ul.open { display: flex; }
+            .menu-toggle { display: block; }
             .stats-grid { grid-template-columns: 1fr; gap: 32px; }
             .concept-grid { grid-template-columns: 1fr; }
             .steps-grid { grid-template-columns: 1fr 1fr; }
             .step::after { display: none; }
             .benefits-grid { grid-template-columns: 1fr; }
-            .tote-scene { width: 320px; height: 440px; }
-            .tote-body { width: 260px; min-height: 340px; padding: 24px 18px 20px; }
-            .tote-handles { width: 160px; height: 100px; }
-            .tote-handle-left { width: 130px; height: 95px; }
-            .tote-city { font-size: 1.3rem; }
-            .tote-logos { gap: 5px; }
-            .tote-logo-slot { font-size: 0.45rem; }
+            .testimonials-grid { grid-template-columns: 1fr; }
+            .tote-image { max-width: 320px; }
             .form-row { flex-direction: column; gap: 16px; }
+            .about-content { grid-template-columns: 1fr; gap: 32px; }
+            .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+            .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+            .footer-legal { justify-content: center; }
+            .pricing-card { padding: 36px 24px; }
+            .trust-logos { gap: 24px; }
         }
     </style>
 </head>
 <body>
+    <!-- Top Banner -->
+    <div class="top-banner">
+        Édition Lausanne 2026 — <strong>Plus que 4 places disponibles</strong>
+    </div>
     <!-- Navigation -->
     <nav>
         <div class="container">
@@ -676,58 +952,44 @@ Show less
             <ul id="navMenu">
                 <li><a href="#concept">Concept</a></li>
                 <li><a href="#fonctionnement">Fonctionnement</a></li>
+                <li><a href="#tarif">Tarif</a></li>
                 <li><a href="#avantages">Avantages</a></li>
+                <li><a href="#faq">FAQ</a></li>
                 <li><a href="#contact" class="nav-cta">Rejoindre</a></li>
             </ul>
-            <button class="menu-toggle" onclick="document.getElementById('navMenu').classList.toggle('open')">&#9776;</button>
+            <button class="menu-toggle" aria-label="Menu" onclick="toggleMenu()">&#9776;</button>
         </div>
     </nav>
     <!-- Hero -->
     <section class="hero">
         <div class="container">
-            <div class="hero-badge">Un concept unique pour les commerces locaux</div>
+            <div class="hero-badge">Un concept unique pour les commerces locaux suisses</div>
             <h1>Votre commerce sur <em>12 000 tote bags</em> dans votre ville</h1>
             <p>Signature Locale crée un tote bag unique par ville, mettant en avant 12 commerces locaux. Chaque partenaire reçoit 1 000 sacs pour sa clientèle.</p>
             <div class="hero-buttons">
-                <a href="#contact" class="btn btn-primary">Inscrire mon commerce</a>
+                <a href="#contact" class="btn btn-primary">Inscrire mon commerce &#8594;</a>
                 <a href="#concept" class="btn btn-outline">Découvrir le concept</a>
             </div>
             <div class="hero-visual">
-                <div class="tote-scene">
-                <div class="tote-wrapper">
-                    <div class="tote-handles">
-                        <div class="tote-handle-left"></div>
-                    </div>
-                    <div class="tote-body">
-                        <div class="tote-city">Lausanne</div>
-                        <div class="tote-year">2026</div>
-                        <div class="tote-divider"></div>
-                        <div class="tote-logos">
-                            <div class="tote-logo-slot">Café<br>Léman</div>
-                            <div class="tote-logo-slot">Bio<br>Marché</div>
-                            <div class="tote-logo-slot">Fleurs<br>du Lac</div>
-                            <div class="tote-logo-slot">Librairie<br>Voltaire</div>
-                            <div class="tote-logo-slot">Boulang.<br>du Parc</div>
-                            <div class="tote-logo-slot">Fromag.<br>Suisse</div>
-                            <div class="tote-logo-slot">Vins<br>&amp; Sens</div>
-                            <div class="tote-logo-slot">Atelier<br>Bois</div>
-                            <div class="tote-logo-slot">Vélo<br>City</div>
-                            <div class="tote-logo-slot">Savons<br>d'Arve</div>
-                            <div class="tote-logo-slot">Photo<br>Studio</div>
-                            <div class="tote-logo-slot">Yoga<br>Zen</div>
-                        </div>
-                        <div class="tote-tagline">Signature Locale</div>
-                    </div>
-                </div>
-                <div class="tote-shadow"></div>
-                </div>
+                <img src="tote-bag.webp" alt="Tote bag Signature Locale — Lausanne 2026" class="tote-image" loading="lazy">
             </div>
+        </div>
+    </section>
+    <!-- Trust bar -->
+    <section class="trust-bar">
+        <p>Ils nous font confiance</p>
+        <div class="trust-logos">
+            <span>EPFL</span>
+            <span>AUDEMARS PIGUET</span>
+            <span>CARTIER</span>
+            <span>YADLO</span>
+            <span>UNIL</span>
         </div>
     </section>
     <!-- Stats -->
     <section class="stats">
         <div class="container">
-            <div class="stats-grid">
+            <div class="stats-grid reveal-children">
                 <div>
                     <div class="stat-number">12</div>
                     <div class="stat-label">Commerces par ville</div>
@@ -748,8 +1010,8 @@ Show less
         <div class="container">
             <div class="section-tag">Le concept</div>
             <h2 class="section-title">Un sac, douze histoires locales</h2>
-            <p class="section-subtitle">Signature Locale rassemble 12 commerces engagés sur un tote bag au design soigné, distribué à grande échelle dans votre ville.</p>
-            <div class="concept-grid">
+            <p class="section-subtitle">Signature Locale rassemble 12 commerces engagés sur un tote bag au design soigné, distribué à grande echelle dans votre ville.</p>
+            <div class="concept-grid reveal-children">
                 <div class="concept-card">
                     <div class="concept-icon">&#127919;</div>
                     <h3>Visibilité partagée</h3>
@@ -768,13 +1030,43 @@ Show less
             </div>
         </div>
     </section>
+    <!-- About -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-content reveal">
+                <div class="about-text">
+                    <div class="section-tag">Qui sommes-nous</div>
+                    <h2 class="section-title">L'Atelier Suisse derrière le projet</h2>
+                    <p>Signature Locale est né d'une conviction simple : les commerces locaux méritent une visibilité à la hauteur de leur engagement. Nous sommes une équipe basée en Suisse, passionnée par le commerce de proximité et le design.</p>
+                    <p>Notre mission est de créer des ponts entre les commerçants d'une même ville, en leur offrant un outil de communication beau, utile et partagé.</p>
+                    <div class="about-values">
+                        <div class="about-value">
+                            <div class="value-number">3</div>
+                            <div class="value-label">Villes</div>
+                        </div>
+                        <div class="about-value">
+                            <div class="value-number">36</div>
+                            <div class="value-label">Commerces</div>
+                        </div>
+                        <div class="about-value">
+                            <div class="value-number">36K</div>
+                            <div class="value-label">Sacs distribués</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <img src="tote-bag.webp" alt="Tote bag Signature Locale" style="border-radius: 16px; box-shadow: 0 12px 40px rgba(0,0,0,0.1);">
+                </div>
+            </div>
+        </div>
+    </section>
     <!-- Steps -->
     <section class="steps" id="fonctionnement">
         <div class="container">
             <div class="section-tag">Comment ça marche</div>
             <h2 class="section-title">Quatre étapes simples</h2>
             <p class="section-subtitle">De l'inscription à la distribution, tout est pris en charge.</p>
-            <div class="steps-grid">
+            <div class="steps-grid reveal-children">
                 <div class="step">
                     <div class="step-number">1</div>
                     <h3>Inscription</h3>
@@ -793,7 +1085,7 @@ Show less
                 <div class="step">
                     <div class="step-number">4</div>
                     <h3>Distribution</h3>
-                    <p>Chaque commerce reçoit 1 000 sacs à offrir à ses clients.</p>
+                    <p>Chaque commerce reçoit 1 000 sacs a offrir a ses clients.</p>
                 </div>
             </div>
         </div>
@@ -804,7 +1096,7 @@ Show less
             <div class="section-tag">Avantages</div>
             <h2 class="section-title">Pourquoi rejoindre Signature Locale ?</h2>
             <p class="section-subtitle">Un investissement malin pour une visibilité maximale auprès de votre communauté.</p>
-            <div class="benefits-grid">
+            <div class="benefits-grid reveal-children">
                 <div class="benefit-item">
                     <div class="benefit-check">&#10003;</div>
                     <div class="benefit-text">
@@ -850,13 +1142,113 @@ Show less
             </div>
         </div>
     </section>
+    <!-- Pricing -->
+    <section class="pricing" id="tarif">
+        <div class="container">
+            <div class="section-tag">Tarif</div>
+            <h2 class="section-title">Un prix transparent, sans surprise</h2>
+            <p class="section-subtitle" style="margin-left:auto;margin-right:auto;">Tout est inclus : design, production, livraison de vos 1 000 sacs.</p>
+            <div class="pricing-card reveal">
+                <h3>Pack Commerce</h3>
+                <div class="pricing-price">CHF 3 900 <span>HT / édition</span></div>
+                <p class="pricing-subtitle">Soit CHF 0.325 par sac distribué (12 000 sacs avec votre logo)</p>
+                <ul class="pricing-features">
+                    <li>1 000 tote bags en coton bio livrés</li>
+                    <li>Votre logo intégré au design de la ville</li>
+                    <li>Placement sur les 12 000 sacs de l'édition</li>
+                    <li>Design professionnel par nos graphistes</li>
+                    <li>Mise en reseau avec les 11 autres commerces</li>
+                    <li>Mention sur nos réseaux sociaux</li>
+                </ul>
+                <a href="#contact" class="btn btn-primary" style="width:100%;justify-content:center;">Réserver ma place &#8594;</a>
+            </div>
+        </div>
+    </section>
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-tag">Témoignages</div>
+            <h2 class="section-title">Ce que disent nos partenaires</h2>
+            <p class="section-subtitle">Des commerçants qui ont rejoint l'aventure Signature Locale.</p>
+            <div class="testimonials-grid reveal-children">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">Nos clients adorent le sac ! On les voit partout dans le quartier. C'est la meilleure publicité qu'on ait jamais eue.</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">ML</div>
+                        <div>
+                            <div class="testimonial-name">Marie Laurent</div>
+                            <div class="testimonial-role">Bottega, Genève</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">Le rapport qualité-prix est imbattable. Pour moins de 4 000 francs, on touche 12 000 personnes. Aucun flyer ne fait ça.</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">PD</div>
+                        <div>
+                            <div class="testimonial-name">Pierre Dutoit</div>
+                            <div class="testimonial-role">Dutoit Fleurs, Genève</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">On a découvert de nouveaux clients grace aux autres commerces du sac. C'est un vrai réseau d'entraide entre commerçants.</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">SC</div>
+                        <div>
+                            <div class="testimonial-name">Sophie Chevalley</div>
+                            <div class="testimonial-role">Le Cygne, Genève</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- FAQ -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <div class="section-tag" style="text-align:center;display:block;">Questions fréquentes</div>
+            <h2 class="section-title" style="text-align:center;">Tout ce que vous devez savoir</h2>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button class="faq-question">Combien coûte la participation ?</button>
+                    <div class="faq-answer"><p>La participation est de CHF 3 900 HT par édition. Ce prix inclut le design, la production de 1 000 sacs en coton bio et la livraison a votre commerce.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">Combien de temps dure une édition ?</button>
+                    <div class="faq-answer"><p>Une édition est lancée dès que les 12 commerces sont réunis. La production prend environ 4 a 6 semaines, puis les sacs sont livrés directement chez vous.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">Quelle est la qualité des sacs ?</button>
+                    <div class="faq-answer"><p>Nos tote bags sont en coton bio 220g/m2, résistants et durables. L'impression est réalisée en sérigraphie pour un rendu professionnel et longue durée.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">Puis-je choisir les autres commerces sur le sac ?</button>
+                    <div class="faq-answer"><p>Nous selectionnons les commerces pour garantir une diversité et une complémentarité optimales. Pas de concurrents directs sur un même sac.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">Y a-t-il un engagement sur la durée ?</button>
+                    <div class="faq-answer"><p>Non, aucun engagement. Vous participez à une édition sans obligation de renouvellement. Vous etes libre de rejoindre les éditions suivantes si vous le souhaitez.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">Dans quelles villes êtes-vous présents ?</button>
+                    <div class="faq-answer"><p>Nous sommes actuellement présents à Genève et Lausanne, avec des éditions prévues à Zurich, Berne et Bâle. Contactez-nous pour proposer votre ville.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
     <!-- CTA / Formulaire -->
     <section class="cta" id="contact">
         <div class="container">
             <div class="section-tag">Passez à l'action</div>
             <h2 class="section-title">Votre commerce sur le prochain tote bag de votre ville</h2>
             <p>Les places sont limitées à 12 par ville. Remplissez le formulaire pour rejoindre ou vous renseigner.</p>
-            <form class="cta-form" action="https://formsubmit.co/contact@signaturelocale.fr" method="POST">
+            <div class="cta-urgency">&#9200; Édition Lausanne 2026 — Plus que 4 places disponibles</div>
+            <div class="cta-contact-options">
+                <div class="cta-contact-option">&#9742; <strong>+41 22 000 00 00</strong></div>
+                <div class="cta-contact-option">&#9993; <strong>contact@signaturelocale.ch</strong></div>
+            </div>
+            <form class="cta-form" id="contactForm" action="https://formsubmit.co/contact@signaturelocale.fr" method="POST">
                 <input type="hidden" name="_subject" value="Nouveau contact — Signature Locale">
                 <input type="hidden" name="_captcha" value="false">
                 <input type="hidden" name="_next" value="https://adri-1704.github.io/Signature-locale/#contact">
@@ -899,18 +1291,100 @@ Show less
                     <textarea id="message" name="message" placeholder="Décrivez votre commerce ou posez vos questions..."></textarea>
                 </div>
                 <div class="form-submit">
-                    <button type="submit" class="btn btn-primary">Envoyer ma demande</button>
+                    <button type="submit" class="btn btn-primary">Envoyer ma demande &#8594;</button>
                 </div>
                 <p class="form-note">Nous vous répondrons sous 48h. Vos données restent confidentielles.</p>
             </form>
+            <div class="form-success" id="formSuccess">
+                <div class="form-success-icon">&#10003;</div>
+                <h3>Merci pour votre demande !</h3>
+                <p>Nous avons bien reçu votre message et vous répondrons sous 48h.</p>
+            </div>
         </div>
     </section>
     <!-- Footer -->
     <footer>
         <div class="container">
-            <div class="logo"><span>Signature</span> Locale</div>
-            <p>&copy; 2026 Signature Locale. Tous droits réservés.</p>
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <div class="logo"><span>Signature</span> Locale</div>
+                    <p>Le tote bag qui met en lumière les commerces locaux suisses. Une édition unique par ville, 12 commerces, 12 000 ambassadeurs.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="#concept">Concept</a></li>
+                        <li><a href="#fonctionnement">Fonctionnement</a></li>
+                        <li><a href="#tarif">Tarif</a></li>
+                        <li><a href="#avantages">Avantages</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact</h4>
+                    <p>&#9993; <a href="mailto:contact@signaturelocale.ch">contact@signaturelocale.ch</a></p>
+                    <p>&#9742; <a href="tel:+41220000000">+41 22 000 00 00</a></p>
+                    <p>Lausanne, Suisse</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Signature Locale. Tous droits réservés.</p>
+                <div class="footer-legal">
+                    <a href="#">Mentions légales</a>
+                    <a href="#">Politique de confidentialité</a>
+                    <a href="#">CGV</a>
+                </div>
+            </div>
         </div>
     </footer>
+    <script>
+        // Mobile menu
+        function toggleMenu() {
+            document.getElementById('navMenu').classList.toggle('open');
+        }
+        // Close menu on click outside
+        document.addEventListener('click', function(e) {
+            var menu = document.getElementById('navMenu');
+            var toggle = document.querySelector('.menu-toggle');
+            if (!menu.contains(e.target) && !toggle.contains(e.target)) {
+                menu.classList.remove('open');
+            }
+        });
+        // Close menu on link click
+        document.querySelectorAll('#navMenu a').forEach(function(link) {
+            link.addEventListener('click', function() {
+                document.getElementById('navMenu').classList.remove('open');
+            });
+        });
+        // Nav shadow on scroll
+        window.addEventListener('scroll', function() {
+            document.querySelector('nav').classList.toggle('scrolled', window.scrollY > 10);
+        });
+        // Scroll reveal animations
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.15 });
+        document.querySelectorAll('.reveal, .reveal-children').forEach(function(el) {
+            observer.observe(el);
+        });
+        // FAQ accordion
+        document.querySelectorAll('.faq-question').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var item = this.parentElement;
+                var wasOpen = item.classList.contains('open');
+                document.querySelectorAll('.faq-item').forEach(function(i) { i.classList.remove('open'); });
+                if (!wasOpen) item.classList.add('open');
+            });
+        });
+        // Form success (when redirected back)
+        if (window.location.hash === '#contact' && document.referrer.includes('formsubmit.co')) {
+            document.getElementById('contactForm').style.display = 'none';
+            document.getElementById('formSuccess').classList.add('show');
+        }
+    </script>
 </body>
 </html>
