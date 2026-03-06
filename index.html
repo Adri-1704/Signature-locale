@@ -77,6 +77,11 @@
         }
         /* ===== Top Banner ===== */
         .top-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 101;
             background: var(--green);
             color: var(--white);
             text-align: center;
@@ -89,7 +94,7 @@
         /* ===== Navigation ===== */
         nav {
             position: fixed;
-            top: 0;
+            top: 38px;
             left: 0;
             right: 0;
             z-index: 100;
@@ -146,7 +151,7 @@
         }
         /* ===== Hero ===== */
         .hero {
-            padding: 130px 0 80px;
+            padding: 168px 0 80px;
             background: linear-gradient(160deg, var(--cream) 0%, var(--green-pale) 50%, #f0faf4 100%);
             text-align: center;
             position: relative;
