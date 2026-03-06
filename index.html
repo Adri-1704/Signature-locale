@@ -1244,7 +1244,7 @@
                 <div class="cta-contact-option">&#9742; <strong>079.451.74.96</strong></div>
                 <div class="cta-contact-option">&#9993; <strong>lateliersuisse.ch@gmail.com</strong></div>
             </div>
-            <form class="cta-form" id="contactForm" action="https://formsubmit.co/lateliersuisse.ch@gmail.com" method="POST">
+            <form class="cta-form" id="contactForm" action="https://formspree.io/f/xkoqnnkn" method="POST">
                 <input type="hidden" name="_subject" value="Nouveau contact — Signature Locale">
                 <input type="hidden" name="_captcha" value="false">
                 <input type="hidden" name="_next" value="https://adri-1704.github.io/Signature-locale/#contact">
@@ -1383,7 +1383,7 @@
             var btn = form.querySelector('button[type="submit"]');
             btn.disabled = true;
             btn.textContent = 'Envoi en cours...';
-            fetch('https://formsubmit.co/ajax/lateliersuisse.ch@gmail.com', {
+            fetch('https://formspree.io/f/xkoqnnkn', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                 body: JSON.stringify({
@@ -1393,8 +1393,7 @@
                     phone: form.phone.value,
                     city: form.city.value,
                     type: form.type.value,
-                    message: form.message.value,
-                    _subject: 'Nouveau contact — Signature Locale'
+                    message: form.message.value
                 })
             })
             .then(function(res) { return res.json(); })
